@@ -74,7 +74,7 @@ devql_cmd_files() {
   preview="$(devql_preview_cmd)"
   local raw
   raw="$(fd --type f --hidden --exclude .git 2>/dev/null || true)"
-  if [[ -z "${raw// }" ]]; then
+  if [[ -z "$raw" ]]; then
     echo "No files found in this tree." >&2
     exit 0
   fi
