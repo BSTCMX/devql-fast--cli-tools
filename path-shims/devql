@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Shim: coloca esta carpeta en PATH o enlaza este archivo a ~/bin/devql.
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "${DIR}/../bin/devql" "$@"

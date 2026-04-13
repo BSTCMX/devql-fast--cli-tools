@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Launcher devql — kit root without relying on cwd.
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=/dev/null
+source "${ROOT}/lib/devql-common.sh"
+
+cmd="${1:-}"
+case "$cmd" in
+  files)
+    devql_cmd_files
+    ;;
+  text)
+    shift || true
+    devql_cmd_text "$*"
+    ;;
+  help|-h|--help)
+    devql_cmd_help "$ROOT"
+    ;;
+  --version|-v)
+    v="$(devql_get_version "$ROOT")"
+    echo "devql v${v}"
+    ;;
+  "")
+    devql_cmd_help "$ROOT"
+    ;;
+  *)
+    echo "Error: unknown subcommand: $cmd" >&2
+    echo "Use: devql help" >&2
+    exit 1
+    ;;
+esac

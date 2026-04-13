@@ -1,0 +1,35 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp
+*.tmp
+*.temp
+
+# Legacy / local
+*.bak
+~/.devql-setup-report.json
+
+# Node (if the repo grows)
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# Editor
+.vscode/
+.idea/
+
+# Env
+.env
+
+# Build / cache
+dist/
+build/
+
+# Test artifacts
+coverage/

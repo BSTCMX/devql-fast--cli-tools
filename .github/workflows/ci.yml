@@ -1,0 +1,29 @@
+# Optional CI: run PowerShell tests on push/PR (requires Core tools on runner).
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Core (winget)
+        shell: pwsh
+        run: |
+          winget install -e --id BurntSushi.ripgrep.MSVC --accept-package-agreements --accept-source-agreements
+          winget install -e --id sharkdp.fd --accept-package-agreements --accept-source-agreements
+          winget install -e --id junegunn.fzf --accept-package-agreements --accept-source-agreements
+          winget install -e --id sharkdp.bat --accept-package-agreements --accept-source-agreements
+      - name: Refresh PATH and run tests
+        shell: pwsh
+        run: |
+          $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
+          Set-Location $env:GITHUB_WORKSPACE
+          & powershell -NoProfile -File tests/run-parse-rgjson-tests.ps1
+          & powershell -NoProfile -File tests/smoke-headless.ps1
+          & powershell -NoProfile -File tests/run-devql-e2e-simulated.ps1
